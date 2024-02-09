@@ -35,9 +35,23 @@ function Logo() {
 
 function Form() {
     return (
-        <div className="add-form">
+        <form className="add-form">
             <h3>What do you need for your ✈️ trip?</h3>
-        </div>
+            <select>
+                {Array.from(
+                    { length: initialItems.length + 1 },
+                    (_, i) => i
+                ).map((num) => (
+                    <option value={num} key={num}>
+                        {num === 0
+                            ? "Select an item..."
+                            : initialItems[num - 1].description}
+                    </option>
+                ))}
+            </select>
+            <input type="text" placeholder="Item..." />
+            <button>Add</button>
+        </form>
     );
 }
 
