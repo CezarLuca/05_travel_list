@@ -34,8 +34,13 @@ function Logo() {
 }
 
 function Form() {
+    function handleSubmit(event) {
+        event.preventDefault();
+        console.log("Submitted!");
+    }
+
     return (
-        <form className="add-form">
+        <form className="add-form" onSubmit={handleSubmit}>
             <h3>What do you need for your ✈️ trip?</h3>
             <select>
                 {Array.from(
@@ -70,10 +75,10 @@ function PackingList() {
 function Item({ item }) {
     return (
         <li>
+            <button>{item.packed ? "✅" : "☑️"}</button>
             <span style={item.packed ? { textDecoration: "line-through" } : {}}>
                 {item.description} - {item.quantity}
             </span>
-            <button>{item.packed ? "✅" : "☑️"}</button>
         </li>
     );
 }

@@ -111,8 +111,8 @@ input {
 
 .list li {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: left;
+    justify-content: auto;
     gap: 1.2rem;
     width: auto;
 }
