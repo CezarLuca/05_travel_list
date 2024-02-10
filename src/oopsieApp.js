@@ -37,35 +37,33 @@ function Logo() {
 
 function Form() {
     const [description, setDescription] = useState("");
-    const [quantity, setQuantity] = useState(0);
 
     function handleSubmit(event) {
         event.preventDefault();
         console.log("Submitted!");
-        if (quantity === 0) {
-            alert("Please select the amount");
-        }
     }
 
     return (
         <form className="add-form" onSubmit={handleSubmit}>
             <h3>What do you need for your ✈️ trip?</h3>
-            <select
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-            >
-                {Array.from({ length: 20 }, (_, i) => i).map((num) => (
+            <select>
+                {Array.from(
+                    { length: initialItems.length + 1 },
+                    (_, i) => i
+                ).map((num) => (
                     <option value={num} key={num}>
-                        {num === 0 ? "Select the amount..." : num}
+                        {num === 0
+                            ? "Select an item..."
+                            : initialItems[num - 1].description}
                     </option>
                 ))}
             </select>
             <input
                 type="text"
-                placeholder="Item description"
+                placeholder="Item..."
                 value={description}
                 onChange={(e) => {
-                    console.log(e.target.value);
+                    console.log(e.target);
                     setDescription(e.target.value);
                 }}
             />
