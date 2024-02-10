@@ -44,7 +44,22 @@ function Form() {
         console.log("Submitted!");
         if (quantity === 0) {
             alert("Please select the amount");
+            return;
+        } else if (description.trim() === "") {
+            alert("Please enter a description");
+            return;
         }
+
+        const newItem = {
+            description,
+            quantity,
+            packed: false,
+            id: initialItems.length + 1,
+        };
+        console.log(newItem);
+
+        setDescription("");
+        setQuantity(0);
     }
 
     return (
@@ -52,7 +67,7 @@ function Form() {
             <h3>What do you need for your ✈️ trip?</h3>
             <select
                 value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
+                onChange={(e) => setQuantity(Number(e.target.value))}
             >
                 {Array.from({ length: 20 }, (_, i) => i).map((num) => (
                     <option value={num} key={num}>
