@@ -38,15 +38,25 @@ function Logo() {
 function Form() {
     const [description, setDescription] = useState("");
     const [quantity, setQuantity] = useState(0);
+    const [quantityError, setQuantityError] = useState(false);
+    const [descriptionError, setDescriptionError] = useState(false);
 
     function handleSubmit(event) {
         event.preventDefault();
         console.log("Submitted!");
         if (quantity === 0) {
-            alert("Please select the amount");
+            // alert("Please select the amount");
+            setQuantityError(true);
+            setTimeout(() => {
+                setQuantityError(false);
+            }, 1000);
             return;
         } else if (description.trim() === "") {
-            alert("Please enter a description");
+            // alert("Please enter a description");
+            setDescriptionError(true);
+            setTimeout(() => {
+                setDescriptionError(false);
+            }, 1000);
             return;
         }
 
@@ -68,6 +78,7 @@ function Form() {
             <select
                 value={quantity}
                 onChange={(e) => setQuantity(Number(e.target.value))}
+                className={quantityError ? "error" : ""}
             >
                 {Array.from({ length: 20 }, (_, i) => i).map((num) => (
                     <option value={num} key={num}>
@@ -83,6 +94,7 @@ function Form() {
                     console.log(e.target.value);
                     setDescription(e.target.value);
                 }}
+                className={descriptionError ? "error" : ""}
             />
             <button>Add</button>
         </form>

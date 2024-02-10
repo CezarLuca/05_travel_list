@@ -138,3 +138,18 @@ input[type="checkbox"] {
     font-weight: 700;
     padding: 3.2rem 0;
 }
+
+.error {
+    animation: flashError 0.5s 2;
+    background-color: red;
+}
+
+@keyframes flashError {
+    0%,
+    100% {
+        background-color: red;
+    }
+    50% {
+        background-color: transparent;
+    }
+}
