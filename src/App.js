@@ -40,6 +40,11 @@ function Form() {
     const [quantity, setQuantity] = useState(0);
     const [quantityError, setQuantityError] = useState(false);
     const [descriptionError, setDescriptionError] = useState(false);
+    const [items, setItems] = useState([]);
+
+    function handleAddItem(item) {
+        setItems((previousItems) => [...previousItems, item]);
+    }
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -67,6 +72,8 @@ function Form() {
             id: initialItems.length + 1,
         };
         console.log(newItem);
+
+        handleAddItem(newItem);
 
         setDescription("");
         setQuantity(0);
