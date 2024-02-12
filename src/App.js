@@ -22,6 +22,7 @@ const initialItems = [
 
 export default function App() {
     const [items, setItems] = useState(initialItems);
+    // const numItems = items.length;
 
     function handleAddItem(newItem) {
         const existingItem = items.find(
@@ -74,7 +75,7 @@ export default function App() {
                 onRemoveItem={handleRemoveItem}
                 onToggleItem={handleToggleItem}
             />
-            <Stats />
+            <Stats items={items} />
         </div>
     );
 }
@@ -180,11 +181,25 @@ function Item({ item, onRemoveItem, onToggleItem }) {
     );
 }
 
-function Stats() {
+function Stats({ items }) {
+    if (items.length === 0) {
+        return (
+            <footer className="stats">
+                <em>No items in your list. Start adding some ⏱️😅</em>
+            </footer>
+        );
+    }
+    const numItems = items.length;
+    const numPacked = items.filter((item) => item.packed).length;
+    const percentagePacked = Math.round((numPacked / numItems) * 100);
+
     return (
         <footer className="stats">
             <em>
-                🧳 You have X items in your list. And you already packed Y (Z%).
+                {percentagePacked === 100
+                    ? "All done! Ready to go! 🎉👏🏻🎉"
+                    : `🧳 You have ${numItems} items in your list. And you already
+                packed ${numPacked} (${percentagePacked}% of total).`}
             </em>
         </footer>
     );
