@@ -21,17 +21,48 @@ const initialItems = [
 ];
 
 export default function App() {
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState(initialItems);
 
-    function handleAddItem(item) {
-        setItems((previousItems) => [...previousItems, item]);
+    function handleAddItem(newItem) {
+        // setItems((previousItems) => [...previousItems, newItem]);
+        const existingItem = items.find(
+            (item) => item.description === newItem.description
+        );
+
+        if (existingItem) {
+            // If an item with the same description already exists, update the quantity
+            setItems(
+                items.map((item) => {
+                    if (item.description === newItem.description) {
+                        return {
+                            ...item,
+                            quantity: item.quantity + newItem.quantity,
+                        };
+                    }
+                    return item;
+                })
+            );
+        } else {
+            // If the item doesn't exist, add it to the list
+            setItems((previousItems) => [...previousItems, newItem]);
+        }
+    }
+
+    function handleRemoveItem(item) {
+        console.log("Removing item", item);
+        // setItems(items.filter((i) => i.id !== item.id));
+        setItems((previousItems) =>
+            previousItems
+                .filter((i) => i.id !== item.id)
+                .map((i, index) => ({ ...i, id: index + 1 }))
+        );
     }
 
     return (
         <div className="app">
             <Logo />
-            <Form onAddItem={handleAddItem} />
-            <PackingList items={items} />
+            <Form items={items} onAddItem={handleAddItem} />
+            <PackingList items={items} onRemoveItem={handleRemoveItem} />
             <Stats />
         </div>
     );
@@ -41,7 +72,7 @@ function Logo() {
     return <h1>🌴 Far Away 🧳</h1>;
 }
 
-function Form({ onAddItem }) {
+function Form({ items, onAddItem }) {
     const [description, setDescription] = useState("");
     const [quantity, setQuantity] = useState(0);
     const [quantityError, setQuantityError] = useState(false);
@@ -70,7 +101,7 @@ function Form({ onAddItem }) {
             description,
             quantity,
             packed: false,
-            id: initialItems.length + 1,
+            id: items.length + 1,
         };
         console.log(newItem);
 
@@ -109,14 +140,15 @@ function Form({ onAddItem }) {
     );
 }
 
-function PackingList({ items }) {
+function PackingList({ items, onRemoveItem }) {
     return (
         <div className="list">
             <ul>
-                {items.map((item, index) => (
+                {items.map((item) => (
                     <Item
                         item={item}
-                        key={(item.id ? item.id : "") + "-" + index}
+                        onRemoveItem={onRemoveItem}
+                        key={item.description + item.quantity}
                     />
                 ))}
             </ul>
@@ -124,13 +156,14 @@ function PackingList({ items }) {
     );
 }
 
-function Item({ item }) {
+function Item({ item, onRemoveItem }) {
     return (
         <li>
             <button>{item.packed ? "✅" : "☑️"}</button>
             <span style={item.packed ? { textDecoration: "line-through" } : {}}>
                 {item.description} - {item.quantity}
             </span>
+            <button onClick={() => onRemoveItem(item)}>✖️</button>
         </li>
     );
 }
