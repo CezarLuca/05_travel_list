@@ -24,11 +24,13 @@ export default function App() {
     const [items, setItems] = useState(initialItems);
 
     function handleAddItem(newItem) {
+        // setItems((previousItems) => [...previousItems, newItem]);
         const existingItem = items.find(
             (item) => item.description === newItem.description
         );
 
         if (existingItem) {
+            // If an item with the same description already exists, update the quantity
             setItems(
                 items.map((item) => {
                     if (item.description === newItem.description) {
@@ -41,12 +43,14 @@ export default function App() {
                 })
             );
         } else {
+            // If the item doesn't exist, add it to the list
             setItems((previousItems) => [...previousItems, newItem]);
         }
     }
 
     function handleRemoveItem(item) {
         console.log("Removing item", item);
+        // setItems(items.filter((i) => i.id !== item.id));
         setItems((previousItems) =>
             previousItems
                 .filter((i) => i.id !== item.id)
@@ -93,12 +97,14 @@ function Form({ items, onAddItem }) {
         event.preventDefault();
         console.log("Submitted!");
         if (quantity === 0) {
+            // alert("Please select the amount");
             setQuantityError(true);
             setTimeout(() => {
                 setQuantityError(false);
             }, 1000);
             return;
         } else if (description.trim() === "" || /\d/.test(description)) {
+            // alert("Please enter a description");
             setDescriptionError(true);
             setTimeout(() => {
                 setDescriptionError(false);
@@ -165,6 +171,24 @@ function PackingList({ items, onRemoveItem, onToggleItem }) {
         </div>
     );
 }
+
+// function Item({ item, onRemoveItem, onToggleItem }) {
+//     return (
+//         <li>
+//             <input
+//                 type="checkbox"
+//                 value={item.packed}
+//                 onChange={() => {
+//                     onToggleItem(item);
+//                 }}
+//             />
+//             <span style={item.packed ? { textDecoration: "line-through" } : {}}>
+//                 {item.description} - {item.quantity}
+//             </span>
+//             <button onClick={() => onRemoveItem(item)}>✖️</button>
+//         </li>
+//     );
+// }
 
 function Item({ item, onRemoveItem, onToggleItem }) {
     return (
