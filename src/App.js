@@ -163,6 +163,13 @@ function PackingList({ items, onRemoveItem, onToggleItem }) {
                     />
                 ))}
             </ul>
+            <div className="actions">
+                <select>
+                    <option value="input">Sort by input order</option>
+                    <option value="description">Sort alphabetically</option>
+                    <option value="packed">Sort by packing status</option>
+                </select>
+            </div>
         </div>
     );
 }
