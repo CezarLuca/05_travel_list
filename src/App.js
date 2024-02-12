@@ -88,7 +88,7 @@ function Form({ items, onAddItem }) {
                 setQuantityError(false);
             }, 1000);
             return;
-        } else if (description.trim() === "") {
+        } else if (description.trim() === "" || /\d/.test(description)) {
             // alert("Please enter a description");
             setDescriptionError(true);
             setTimeout(() => {
