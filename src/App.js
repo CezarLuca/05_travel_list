@@ -66,6 +66,42 @@ export default function App() {
         );
     }
 
+    // function handleSortItems(sortBy) {
+    //     if (sortBy === "input") {
+    //         setItems(items);
+    //     } else if (sortBy === "description") {
+    //         setItems(
+    //             items
+    //                 .slice()
+    //                 .sort((a, b) => a.description.localeCompare(b.description))
+    //         );
+    //     } else if (sortBy === "packed") {
+    //         setItems(
+    //             items
+    //                 .slice()
+    //                 .sort((a, b) => Number(a.packed) - Number(b.packed))
+    //         );
+    //     }
+    // }
+
+    function handleClearOrResetList(ClearOrReset) {
+        if (ClearOrReset === "clear") {
+            const confirmClear = window.confirm(
+                "Are you sure you want to clear the list?"
+            );
+            if (confirmClear) {
+                setItems([]);
+            }
+        } else if (ClearOrReset === "reset") {
+            const confirmReset = window.confirm(
+                "Are you sure you want to reset the list?"
+            );
+            if (confirmReset) {
+                setItems(initialItems);
+            }
+        }
+    }
+
     return (
         <div className="app">
             <Logo />
@@ -74,6 +110,7 @@ export default function App() {
                 items={items}
                 onRemoveItem={handleRemoveItem}
                 onToggleItem={handleToggleItem}
+                onClearOrResetList={handleClearOrResetList}
             />
             <Stats items={items} />
         </div>
@@ -150,7 +187,12 @@ function Form({ items, onAddItem }) {
     );
 }
 
-function PackingList({ items, onRemoveItem, onToggleItem }) {
+function PackingList({
+    items,
+    onRemoveItem,
+    onToggleItem,
+    onClearOrResetList,
+}) {
     const [sortBy, setSortBy] = useState("input");
 
     let sortedItems = [];
@@ -197,6 +239,12 @@ function PackingList({ items, onRemoveItem, onToggleItem }) {
                     <option value="description">Sort alphabetically</option>
                     <option value="packed">Sort by packing status</option>
                 </select>
+                <button onClick={() => onClearOrResetList("clear")}>
+                    Clear List
+                </button>
+                <button onClick={() => onClearOrResetList("reset")}>
+                    Reset List
+                </button>
             </div>
         </div>
     );
