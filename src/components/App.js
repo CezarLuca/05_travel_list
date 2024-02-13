@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Logo from "./Logo";
 import Form from "./Form";
+import PackingList from "./PackingList";
+import Stats from "./Stats";
 
 const initialItems = [
     { id: 1, description: "Passports", quantity: 1, packed: false },
@@ -97,96 +99,5 @@ export default function App() {
             />
             <Stats items={items} />
         </div>
-    );
-}
-
-function PackingList({
-    items,
-    onRemoveItem,
-    onToggleItem,
-    onClearOrResetList,
-}) {
-    const [sortBy, setSortBy] = useState("input");
-
-    let sortedItems = [];
-    if (sortBy === "input") {
-        sortedItems = items;
-    } else if (sortBy === "description") {
-        sortedItems = items
-            .slice()
-            .sort((a, b) => a.description.localeCompare(b.description));
-    } else if (sortBy === "packed") {
-        sortedItems = items
-            .slice()
-            .sort((a, b) => Number(a.packed) - Number(b.packed));
-    }
-
-    return (
-        <div className="list">
-            <ul>
-                {sortedItems.map((item) => (
-                    <Item
-                        item={item}
-                        onRemoveItem={onRemoveItem}
-                        onToggleItem={onToggleItem}
-                        key={item.description + item.quantity}
-                    />
-                ))}
-            </ul>
-            <div className="actions">
-                <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                >
-                    <option value="input">Sort by input order</option>
-                    <option value="description">Sort alphabetically</option>
-                    <option value="packed">Sort by packing status</option>
-                </select>
-                <button onClick={() => onClearOrResetList("clear")}>
-                    Clear List
-                </button>
-                <button onClick={() => onClearOrResetList("reset")}>
-                    Reset List
-                </button>
-            </div>
-        </div>
-    );
-}
-
-function Item({ item, onRemoveItem, onToggleItem }) {
-    return (
-        <li>
-            <button onClick={() => onToggleItem(item)}>
-                {item.packed ? "✅" : "☑️"}
-            </button>
-            <span style={item.packed ? { textDecoration: "line-through" } : {}}>
-                {item.description} - {item.quantity}
-            </span>
-            <button onClick={() => onRemoveItem(item)}>✖️</button>
-        </li>
-    );
-}
-
-function Stats({ items }) {
-    if (items.length === 0) {
-        return (
-            <footer className="stats">
-                <em>No items in your list. Start adding some ⏱️😅</em>
-            </footer>
-        );
-    }
-    const numItems = items.length;
-    const numPacked = items.filter((item) => item.packed).length;
-    const percentagePacked = Math.round((numPacked / numItems) * 100);
-
-    return (
-        <footer className="stats">
-            <em>
-                {percentagePacked === 100
-                    ? "All done! Ready to go! 🎉👏🏻🎉"
-                    : `🧳 You have ${numItems} items in your list. And you already
-                packed ${numPacked} (${percentagePacked}% of total).`}
-            </em>
-        </footer>
     );
 }
