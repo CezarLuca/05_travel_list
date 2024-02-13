@@ -22,6 +22,7 @@ const initialItems = [
 
 export default function App() {
     const [items, setItems] = useState(initialItems);
+    // const numItems = items.length;
 
     function handleAddItem(newItem) {
         const existingItem = items.find(
@@ -64,6 +65,24 @@ export default function App() {
             })
         );
     }
+
+    // function handleSortItems(sortBy) {
+    //     if (sortBy === "input") {
+    //         setItems(items);
+    //     } else if (sortBy === "description") {
+    //         setItems(
+    //             items
+    //                 .slice()
+    //                 .sort((a, b) => a.description.localeCompare(b.description))
+    //         );
+    //     } else if (sortBy === "packed") {
+    //         setItems(
+    //             items
+    //                 .slice()
+    //                 .sort((a, b) => Number(a.packed) - Number(b.packed))
+    //         );
+    //     }
+    // }
 
     function handleClearOrResetList(ClearOrReset) {
         if (ClearOrReset === "clear") {
@@ -178,15 +197,25 @@ function PackingList({
 
     let sortedItems = [];
     if (sortBy === "input") {
+        // sortedItems = items.slice().sort((a, b) => a.id - b.id);
         sortedItems = items;
     } else if (sortBy === "description") {
         sortedItems = items
             .slice()
             .sort((a, b) => a.description.localeCompare(b.description));
     } else if (sortBy === "packed") {
+        // sortedItems = items.slice().sort((a, b) => {
+        //     if (a.packed === b.packed) {
+        //         return 0;
+        //     } else if (a.packed) {
+        //         return 1;
+        //     } else {
+        //         return -1;
+        //     }
+        // });
         sortedItems = items
             .slice()
-            .sort((a, b) => Number(a.packed) - Number(b.packed));
+            .sort((a, b) => Number(a.packed) - Number(b.packed)); // this is the same as the above
     }
 
     return (
