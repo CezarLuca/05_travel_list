@@ -151,10 +151,35 @@ function Form({ items, onAddItem }) {
 }
 
 function PackingList({ items, onRemoveItem, onToggleItem }) {
+    const [sortBy, setSortBy] = useState("input");
+
+    let sortedItems = [];
+    if (sortBy === "input") {
+        // sortedItems = items.slice().sort((a, b) => a.id - b.id);
+        sortedItems = items;
+    } else if (sortBy === "description") {
+        sortedItems = items
+            .slice()
+            .sort((a, b) => a.description.localeCompare(b.description));
+    } else if (sortBy === "packed") {
+        // sortedItems = items.slice().sort((a, b) => {
+        //     if (a.packed === b.packed) {
+        //         return 0;
+        //     } else if (a.packed) {
+        //         return 1;
+        //     } else {
+        //         return -1;
+        //     }
+        // });
+        sortedItems = items
+            .slice()
+            .sort((a, b) => Number(a.packed) - Number(b.packed)); // this is the same as the above
+    }
+
     return (
         <div className="list">
             <ul>
-                {items.map((item) => (
+                {sortedItems.map((item) => (
                     <Item
                         item={item}
                         onRemoveItem={onRemoveItem}
@@ -164,7 +189,10 @@ function PackingList({ items, onRemoveItem, onToggleItem }) {
                 ))}
             </ul>
             <div className="actions">
-                <select>
+                <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                >
                     <option value="input">Sort by input order</option>
                     <option value="description">Sort alphabetically</option>
                     <option value="packed">Sort by packing status</option>
